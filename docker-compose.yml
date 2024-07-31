@@ -7,7 +7,7 @@ services:
     container_name: nginx-proxy
     # command: [nginx-debug, '-g', 'daemon off;'] # debug
     environment:
-      DOMAINS: MP MPA MPL VDV VDVA
+      DOMAINS: MP MPA MPL MPPL VDV VDVA
       MP: minepiece.fr
       MPA: adminer.minepiece.fr
       MPL: launcher.minepiece.fr
@@ -17,7 +17,8 @@ services:
     volumes:
       - ./data/nginx/conf.d/:/etc/nginx/conf.d/:ro
       - ./data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./logs:/var/log
+      - ./logs/certbot:/var/log/letsencrypt
+      - ./logs/nginx:/var/log/nginx
       - ./data/certbot/letsencrypt:/etc/letsencrypt
       - ./data/certbot/acme-challenge:/var/www/certbot
       # - ./html:/var/www/html
