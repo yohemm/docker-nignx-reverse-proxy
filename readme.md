@@ -1,5 +1,3 @@
 # a faire
-
-- Ne pas recertifier à l'ouverture si le certificat est valide.
 - vérifier la crontab sinon la refaire
 - avoir plus de params (comme DEV/PROD ou renew ou pas)

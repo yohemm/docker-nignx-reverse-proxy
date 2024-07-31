@@ -1,6 +1,6 @@
 FROM nginx:1.27.0-alpine3.19-perl
 # RUN apk update
-RUN apk add -i --no-cache certbot
+RUN apk add -i --no-cache certbot && apk add -i --no-cache openssl
 RUN mkdir /var/www/ && mkdir /var/www/certbot
 # RUN echo "43 6 * * * certbot renew --post-hook \"systemctl reload nginx\"" >> /etc/crontabs/root
 COPY --chmod=771 ./scripts /scripts
