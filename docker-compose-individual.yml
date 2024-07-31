@@ -1,0 +1,53 @@
+version: "3.9"
+services:
+  reverse-proxy:
+    image: nginx:1.27.0-alpine3.19-perl
+    container_name: nginx-proxy
+    # command: [nginx-debug, '-g', 'daemon off;'] # debug
+    environment:
+      MP: minepiece.fr
+      MPA: adminer.minepiece.fr
+      MPL: launcher.minepiece.fr
+      MPPL: plugins.minepiece.fr
+      VDV: gites-hautes-vosges.fr
+      VDVA: adminer.gites-hautes-vosges.fr
+    volumes:
+      - ./conf.d/:/etc/nginx/conf.d/:ro
+      - ./logs/nginx:/var/logs
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/acme_challenge:/var/www/certbot
+      # - ./html:/var/www/html
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      # - vps-public
+      - minepiece-out
+      - vdv-out
+    # depends_on:
+    #   - certbot
+  certbot:
+    build:
+      context: .
+      dockerfile: CertbotFile
+    container_name: certificator
+    volumes:
+      - ./logs/certbot:/var/log/letsencrypt/
+      - ./data/letsencrypt:/etc/letsencrypt
+      - ./data/acme_challenge:/tmp/letsencrypt
+
+    command: certonly -v --webroot --agree-tos --renew-by-default --preferred-challenges http-01 --email vaxelaire.yohem@gmail.com --webroot-path /tmp/letsencrypt -d minepiece.fr
+    networks:
+      # - vps-public
+      - minepiece-out
+      - vdv-out
+
+networks:
+  vdv-out:
+    name: vdv-out
+    driver: bridge
+    external: true
+  minepiece-out:
+    name: minepiece-out
+    external: true
+    driver: bridge

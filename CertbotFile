@@ -1,0 +1,4 @@
+FROM certbot/certbot:v2.11.0
+RUN mkdir /tmp/letsencrypt
+EXPOSE 80
+EXPOSE 443
